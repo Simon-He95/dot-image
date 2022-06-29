@@ -1,5 +1,5 @@
 ## Dot Image
-[live demo](dot-image.hejian.club)
+[live demo](http://dot-image.hejian.club/)
 
 ## 介绍
 将一个图片转换为点图
