@@ -1,24 +1,26 @@
 <script setup lang="ts">
-import { randomRgb } from "simon-js-tool";
-import { DotImageCanvas } from "../../src/DotImageCanvas.ts";
-import img from "../public/3.png";
-import img1 from "../public/1.jpg";
-const el = ref(null);
-const fontWeight = ref(1);
-const color = ref(randomRgb());
-let start = null;
+import { randomRgb } from 'simon-js-tool'
+import { DotImageCanvas } from '../../src/DotImageCanvas.ts'
+import img from '../public/3.png'
+import img1 from '../public/1.jpg'
+const el = ref(null)
+const fontWeight = ref(1)
+const color = ref(randomRgb())
+let start = null
 function update(timestamp) {
-  if (start === null) start = timestamp;
-  const progress = timestamp - start;
+  if (start === null)
+    start = timestamp
+  const progress = timestamp - start
   if (progress > 1000) {
-    start = timestamp;
-    if (fontWeight.value > 9) fontWeight.value = 1;
-    else fontWeight.value++;
-    color.value = randomRgb();
+    start = timestamp
+    if (fontWeight.value > 9)
+      fontWeight.value = 1
+    else fontWeight.value++
+    color.value = randomRgb()
   }
-  requestAnimationFrame(update);
+  requestAnimationFrame(update)
 }
-requestAnimationFrame(update);
+requestAnimationFrame(update)
 </script>
 
 <template>
