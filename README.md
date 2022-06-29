@@ -9,6 +9,11 @@
 npm i dot-image
 ```
 
+## Props
+- src 图片地址
+- color 图片颜色 默认原始图片的像素颜色
+- fontWeight 像素大小
+
 ## 使用说明
 - main.ts
 

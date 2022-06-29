@@ -13,7 +13,7 @@ export const DotImage = defineComponent({
     },
     color: {
       type: String,
-      default: 'black',
+      default: '',
     },
     fontWeight: {
       type: [Number, String],
