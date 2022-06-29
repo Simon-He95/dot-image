@@ -1,5 +1,6 @@
 ## Dot Image
 [live demo](http://dot-image.hejian.club/)
+可以从本地上传图片,查看效果
 
 ## 介绍
 将一个图片转换为点图

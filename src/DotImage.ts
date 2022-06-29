@@ -23,17 +23,23 @@ export const DotImage = defineComponent({
       type: Function,
       default: () => { },
     },
+    onload: {
+      type: Function,
+      default: () => { },
+    },
   },
   setup(props) {
     const dotText = new DotImageCanvas(props.src, props.color, +props.fontWeight)
     const dotTextEl = ref<HTMLElement>()
     onMounted(() => {
       update(dotTextEl.value!, dotText.canvas!)
+      setTimeout(() => props.onload({ status: dotText.status }))
     })
-    watch(props, () => {
-      const newDotText = dotText.repaint(props.src, props.color, +props.fontWeight)
+    watch(props, async () => {
+      const newDotText = await dotText.repaint(props.src, props.color, +props.fontWeight)
       update(dotTextEl.value!, newDotText.canvas!)
       props.clear(newDotText.clearCanvas.bind(newDotText))
+      props.onload({ status: dotText.status })
     })
     props.clear(dotText.clearCanvas.bind(dotText))
     return () => h('div', { ref: dotTextEl })
