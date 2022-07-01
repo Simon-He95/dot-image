@@ -1,6 +1,6 @@
 {
   "name": "dot-image",
-  "version": "0.0.14",
+  "version": "0.0.15",
   "packageManager": "pnpm@6.32.3",
   "description": "dot-image",
   "author": "Simon He",
