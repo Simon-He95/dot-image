@@ -1,5 +1,6 @@
 import type { DefineComponent } from 'vue'
 import { defineComponent, h, onMounted, ref, watch } from 'vue'
+import { animationFrameWrapper } from 'simon-js-tool'
 import { DotImageCanvas } from './DotImageCanvas'
 import type { DotImageType } from './types'
 
@@ -27,22 +28,36 @@ export const DotImage = defineComponent({
       type: Function,
       default: () => { },
     },
+    bgColor: {
+      type: String,
+      default: '#fff',
+    },
   },
   setup(props) {
-    const dotText = new DotImageCanvas(props.src, props.color, +props.fontWeight)
-    const dotTextEl = ref<HTMLElement>()
+    const dotImage = new DotImageCanvas(props.src, props.color, +props.fontWeight, props.bgColor)
+    const dotImageEl = ref<HTMLElement>()
     onMounted(() => {
-      update(dotTextEl.value!, dotText.canvas!)
-      setTimeout(() => props.onload({ status: dotText.status }))
+      update(dotImageEl.value!, dotImage.canvas!)
+      const stop = animationFrameWrapper(() => {
+        if (dotImage.status === 'success') {
+          stop()
+          props.onload({ status: dotImage.status })
+        }
+      }, 100)
     })
     watch(props, async () => {
-      const newDotText = await dotText.repaint(props.src, props.color, +props.fontWeight)
-      update(dotTextEl.value!, newDotText.canvas!)
-      props.clear(newDotText.clearCanvas.bind(newDotText))
-      props.onload({ status: dotText.status })
+      const newDotImage = await dotImage.repaint(props.src, props.color, +props.fontWeight)
+      update(dotImageEl.value!, newDotImage.canvas!)
+      props.clear(newDotImage.clearCanvas.bind(newDotImage))
+      const stop = animationFrameWrapper(() => {
+        if (dotImage.status === 'success') {
+          stop()
+          props?.onload({ status: dotImage.status })
+        }
+      }, 100)
     })
-    props.clear(dotText.clearCanvas.bind(dotText))
-    return () => h('div', { ref: dotTextEl })
+    props.clear(dotImage.clearCanvas.bind(dotImage))
+    return () => h('div', { ref: dotImageEl })
   },
 }) as DefineComponent<DotImageType>
 

@@ -1,7 +1,7 @@
 import { createApp } from 'vue'
 import { createRouter, createWebHistory } from 'vue-router'
 import routes from 'virtual:generated-pages'
-import { VividTyping } from 'vivid-typing'
+import { DotText } from 'dot-text'
 import { DotImage } from '../../src'
 import App from './App.vue'
 
@@ -15,6 +15,6 @@ const router = createRouter({
   routes,
 })
 app.component('DotImage', DotImage)
-app.component('VividTyping', VividTyping)
+app.component('DotText', DotText)
 app.use(router)
 app.mount('#app')
