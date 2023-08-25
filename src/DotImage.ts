@@ -1,6 +1,6 @@
 import type { DefineComponent } from 'vue'
 import { defineComponent, h, onMounted, ref, watch } from 'vue'
-import { animationFrameWrapper } from 'simon-js-tool'
+import { useRaf } from 'lazy-js-utils'
 import { DotImageCanvas } from './DotImageCanvas'
 import type { DotImageType } from './types'
 
@@ -38,7 +38,7 @@ export const DotImage = defineComponent({
     const dotImageEl = ref<HTMLElement>()
     onMounted(() => {
       update(dotImageEl.value!, dotImage.canvas!)
-      const stop = animationFrameWrapper(() => {
+      const stop = useRaf(() => {
         if (dotImage.status === 'success') {
           stop()
           props.onload({ status: dotImage.status })
@@ -49,7 +49,7 @@ export const DotImage = defineComponent({
       const newDotImage = await dotImage.repaint(props.src, props.color, +props.fontWeight)
       update(dotImageEl.value!, newDotImage.canvas!)
       props.clear(newDotImage.clearCanvas.bind(newDotImage))
-      const stop = animationFrameWrapper(() => {
+      const stop = useRaf(() => {
         if (dotImage.status === 'success') {
           stop()
           props?.onload({ status: dotImage.status })

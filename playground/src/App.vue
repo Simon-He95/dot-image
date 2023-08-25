@@ -1,19 +1,21 @@
 <script setup lang="ts">
-import { animationFrameWrapper, randomRgb, toBase64 } from 'simon-js-tool'
-import { DotImageCanvas } from '../../src/DotImageCanvas.ts'
+import { toBase64 } from 'lazy-js-utils'
 import img from '../public/3.png'
 import img2 from '../public/2.jpg'
 const fontWeight = ref(3)
 
-const fileEl = ref(null)
+const fileEl = ref<HTMLInputElement>()
 const uploadImage = ref('')
 
 const loading = ref(false)
 async function fileChange() {
   loading.value = true
-  const file = fileEl.value.files[0]
-  const base64 = await toBase64(file, 'file')
-  uploadImage.value = base64
+  if (!fileEl.value)
+    return
+
+  const file = fileEl.value.files![0]
+  const base64 = await toBase64(file)
+  uploadImage.value = base64 as string
 }
 </script>
 

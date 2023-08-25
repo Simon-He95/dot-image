@@ -1,4 +1,5 @@
-import { idleCallbackWrapper, memorizeFn } from 'simon-js-tool'
+import { memorizeFn, useRic } from 'lazy-js-utils'
+
 export class DotImageCanvas {
   canvas: HTMLCanvasElement = document.createElement('canvas')
   ctx: CanvasRenderingContext2D = this.canvas.getContext('2d')!
@@ -100,8 +101,10 @@ export class DotImageCanvas {
         }
       })
     }
-    idleCallbackWrapper(tasks, () => {
-      this.status = 'success'
+    useRic(tasks, {
+      callback: () => {
+        this.status = 'success'
+      },
     })
   }
 
