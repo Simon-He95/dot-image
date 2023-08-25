@@ -1,5 +1,5 @@
 ## Dot Image
-[live demo](http://dot-image.hejian.club/)
+[live demo](https://dot-image.netlify.app)
 可以从本地上传图片,查看效果
 
 ## 介绍
