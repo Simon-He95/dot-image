@@ -1,4 +1,5 @@
-import { memorizeFn, useRic } from 'lazy-js-utils'
+import type { MaybeElement } from 'lazy-js-utils'
+import { insertElement, memorizeFn, removeElement, useRic } from 'lazy-js-utils'
 import type { Direction } from './types'
 
 export class DotImageCanvas {
@@ -10,6 +11,7 @@ export class DotImageCanvas {
   fontWeight = 1
   status = 'pending'
   bgColor?: string
+  stop: () => void = () => { }
   direction: Direction = 'horizontal'
   constructor(src: string, color: string, fontWeight: number, bgColor = '#fff', direction?: Direction) {
     this.initOptions(src, color, fontWeight, bgColor, direction)
@@ -90,8 +92,7 @@ export class DotImageCanvas {
     const size = this.fontWeight * 50 / this.canvas.width
     const getPoint = memorizeFn((i: number) => oneTempLength * (i + 0.5))
     const tasks: Function[] = []
-    // if (this.direction !== 'horizontal')
-    //   debugger
+
     if (this.direction === 'horizontal-reverse') {
       for (let i = h - 1; i >= 0; i--) {
         tasks.push(() => {
@@ -153,7 +154,7 @@ export class DotImageCanvas {
       }
     }
 
-    useRic(tasks, {
+    this.stop = useRic(tasks, {
       callback: () => {
         this.status = 'success'
       },
@@ -169,13 +170,25 @@ export class DotImageCanvas {
   }
 
   async repaint(src: string, color: string, fontWeight: number, bgColor = '#fff', direction?: Direction) {
+    this.stop()
     this.status = 'pending'
     this.initOptions(src, color, fontWeight, bgColor, direction)
     return this.executor()
   }
 
   clearCanvas() {
+    this.stop()
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
+  }
+
+  append(container: MaybeElement) {
+    insertElement(container, this.canvas)
+    return this
+  }
+
+  destory() {
+    this.stop()
+    removeElement(this.canvas)
   }
 }
 

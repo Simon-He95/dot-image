@@ -20,10 +20,6 @@ export const DotImage = defineComponent({
       type: [Number, String],
       default: 5,
     },
-    clear: {
-      type: Function,
-      default: () => { },
-    },
     onload: {
       type: Function,
       default: () => { },
@@ -52,7 +48,6 @@ export const DotImage = defineComponent({
     watch(props, async () => {
       const newDotImage = await dotImage.repaint(props.src, props.color, +props.fontWeight)
       update(dotImageEl.value!, newDotImage.canvas!)
-      props.clear(newDotImage.clearCanvas.bind(newDotImage))
       const stop = useRaf(() => {
         if (dotImage.status === 'success') {
           stop()
@@ -60,7 +55,6 @@ export const DotImage = defineComponent({
         }
       }, 100)
     })
-    props.clear(dotImage.clearCanvas.bind(dotImage))
     return () => h('div', { ref: dotImageEl })
   },
 }) as DefineComponent<DotImageType>
