@@ -4,3 +4,5 @@ export interface DotImageType {
   fontWeight: number | string
   clear: Function
 }
+
+export type Direction = 'horizontal' | 'vertical' | 'horizontal-reverse' | 'vertical-reverse'

@@ -1,4 +1,5 @@
 import { memorizeFn, useRic } from 'lazy-js-utils'
+import type { Direction } from './types'
 
 export class DotImageCanvas {
   canvas: HTMLCanvasElement = document.createElement('canvas')
@@ -9,8 +10,9 @@ export class DotImageCanvas {
   fontWeight = 1
   status = 'pending'
   bgColor?: string
-  constructor(src: string, color: string, fontWeight: number, bgColor = '#fff') {
-    this.initOptions(src, color, fontWeight, bgColor)
+  direction: Direction = 'horizontal'
+  constructor(src: string, color: string, fontWeight: number, bgColor = '#fff', direction?: Direction) {
+    this.initOptions(src, color, fontWeight, bgColor, direction)
     this.executor()
   }
 
@@ -88,19 +90,69 @@ export class DotImageCanvas {
     const size = this.fontWeight * 50 / this.canvas.width
     const getPoint = memorizeFn((i: number) => oneTempLength * (i + 0.5))
     const tasks: Function[] = []
-    for (let i = 0; i < h; i++) {
-      tasks.push(() => {
-        for (let j = 0; j < w; j++) {
-          const color = imagePointSet[i][j]
-          if (color) {
-            this.ctx.beginPath()
-            this.ctx.arc(getPoint(j), getPoint(i), size, 0, Math.PI * 2)
-            this.ctx.fillStyle = this.color || `${color}`
-            this.ctx.fill()
+    // if (this.direction !== 'horizontal')
+    //   debugger
+    if (this.direction === 'horizontal-reverse') {
+      for (let i = h - 1; i >= 0; i--) {
+        tasks.push(() => {
+          for (let j = w - 1; j >= 0; j--) {
+            const color = imagePointSet[i][j]
+            if (color) {
+              this.ctx.beginPath()
+              this.ctx.arc(getPoint(j), getPoint(i), size, 0, Math.PI * 2)
+              this.ctx.fillStyle = this.color || `${color}`
+              this.ctx.fill()
+            }
           }
-        }
-      })
+        })
+      }
     }
+    else if (this.direction === 'horizontal') {
+      for (let i = 0; i < h; i++) {
+        tasks.push(() => {
+          for (let j = 0; j < w; j++) {
+            const color = imagePointSet[i][j]
+            if (color) {
+              this.ctx.beginPath()
+              this.ctx.arc(getPoint(j), getPoint(i), size, 0, Math.PI * 2)
+              this.ctx.fillStyle = this.color || `${color}`
+              this.ctx.fill()
+            }
+          }
+        })
+      }
+    }
+    else if (this.direction === 'vertical') {
+      for (let j = 0; j < w; j++) {
+        tasks.push(() => {
+          for (let i = 0; i < h; i++) {
+            const color = imagePointSet[i][j]
+            if (color) {
+              this.ctx.beginPath()
+              this.ctx.arc(getPoint(j), getPoint(i), size, 0, Math.PI * 2)
+              this.ctx.fillStyle = this.color || `${color}`
+              this.ctx.fill()
+            }
+          }
+        })
+      }
+    }
+    else if (this.direction === 'vertical-reverse') {
+      for (let j = w - 1; j >= 0; j--) {
+        tasks.push(() => {
+          for (let i = h - 1; i >= 0; i--) {
+            const color = imagePointSet[i][j]
+            if (color) {
+              this.ctx.beginPath()
+              this.ctx.arc(getPoint(j), getPoint(i), size, 0, Math.PI * 2)
+              this.ctx.fillStyle = this.color || `${color}`
+              this.ctx.fill()
+            }
+          }
+        })
+      }
+    }
+
     useRic(tasks, {
       callback: () => {
         this.status = 'success'
@@ -108,11 +160,12 @@ export class DotImageCanvas {
     })
   }
 
-  initOptions(src: string, color: string, fontWeight: number, bgColor: string) {
+  initOptions(src: string, color: string, fontWeight: number, bgColor: string, direction: Direction = 'horizontal') {
     this.originSrc = src
     this.color = color
     this.fontWeight = fontWeight
     this.bgColor = bgColor
+    this.direction = direction
   }
 
   async repaint(src: string, color: string, fontWeight: number, bgColor = '#fff') {

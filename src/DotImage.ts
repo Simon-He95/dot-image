@@ -1,8 +1,8 @@
-import type { DefineComponent } from 'vue'
+import type { DefineComponent, PropType } from 'vue'
 import { defineComponent, h, onMounted, ref, watch } from 'vue'
 import { useRaf } from 'lazy-js-utils'
 import { DotImageCanvas } from './DotImageCanvas'
-import type { DotImageType } from './types'
+import type { Direction, DotImageType } from './types'
 
 export const DotImage = defineComponent({
   name: 'DotImage',
@@ -32,9 +32,13 @@ export const DotImage = defineComponent({
       type: String,
       default: '#fff',
     },
+    direction: {
+      type: String as PropType<Direction>,
+      default: 'horizontal',
+    },
   },
   setup(props) {
-    const dotImage = new DotImageCanvas(props.src, props.color, +props.fontWeight, props.bgColor)
+    const dotImage = new DotImageCanvas(props.src, props.color, +props.fontWeight, props.bgColor, props.direction)
     const dotImageEl = ref<HTMLElement>()
     onMounted(() => {
       update(dotImageEl.value!, dotImage.canvas!)

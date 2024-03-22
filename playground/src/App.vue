@@ -23,7 +23,7 @@ async function fileChange() {
   <main font-sans p=" y-10" text="center gray-700 dark:gray-200">
     <dot-text text="Dot Image" color="grey" font-size="30" font-weight="10" ma m-y-10 />
     <DotImage :src="img" bg-color="transparent" :font-weight="fontWeight" w-20 />
-    <DotImage :src="img2" :onload="onload1" :font-weight="fontWeight" ma h-80 p-l-10 />
+    <DotImage direction="vertical" :src="img2" :onload="onload1" :font-weight="fontWeight" ma h-80 p-l-10 />
     <input ref="fileEl" type="file" hidden accept="image/*" @change="fileChange">
     <div>
       <button btn m-y-5 @click="fileEl.click()">

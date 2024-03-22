@@ -14,6 +14,7 @@ npm i dot-image
 - src 图片地址
 - color 图片颜色 默认原始图片的像素颜色
 - fontWeight 像素大小
+- direction 控制绘制的方向 默认为纵向
 
 ## 使用说明
 - main.ts
@@ -30,4 +31,14 @@ import img from '../public/3.png'
 - vue template
 ```html
 <DotImage :src="img" color="red" font-weight="5" w-20 ma ></DotImage>
+```
+
+- JS
+```js
+const dotImage1 = new DotImageCanvas(kb, '', 3, 'transparent')
+dotImage1.append('.dotImage')
+```
+- html
+```html
+<span class="dotImage" />
 ```
