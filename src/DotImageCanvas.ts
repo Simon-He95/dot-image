@@ -168,9 +168,9 @@ export class DotImageCanvas {
     this.direction = direction
   }
 
-  async repaint(src: string, color: string, fontWeight: number, bgColor = '#fff') {
+  async repaint(src: string, color: string, fontWeight: number, bgColor = '#fff', direction?: Direction) {
     this.status = 'pending'
-    this.initOptions(src, color, fontWeight, bgColor)
+    this.initOptions(src, color, fontWeight, bgColor, direction)
     return this.executor()
   }
 
